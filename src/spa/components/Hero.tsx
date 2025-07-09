@@ -1,7 +1,7 @@
 import { useLanguage } from '@/core/context/LanguageContext';
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Download, Mail, Phone } from 'lucide-react';
+import { Code2, Mail, Phone } from 'lucide-react';
 import { useHeroHook } from '../hooks/useHeroHook';
 
 export const Hero = () => {
@@ -10,7 +10,7 @@ export const Hero = () => {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [isHovered, setIsHovered] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
-  const { skills, floatingTags, socialMediaLinks } = useHeroHook({ isSpanish });
+  const { skills, floatingTags, socialMediaLinks } = useHeroHook();
 
   useEffect(() => {
     const handleMouseMove = (e : any) => setMousePosition({ x: e.clientX, y: e.clientY });
@@ -118,15 +118,14 @@ export const Hero = () => {
               </motion.div>
 
               {/* CTA Buttons */}
-              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
+              <motion.div onClick={() => window.location.href = '#projects'} 
+                initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.7 }} className="flex flex-wrap justify-center lg:justify-start gap-4 mb-8">
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="group flex items-center space-x-2 px-8 py-3 rounded-full border border-white/20 text-white hover:bg-white/10 transition-all duration-300 bg-white/20"
+                <motion.button whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }} className="group flex items-center space-x-2 px-8 py-3 rounded-full border border-white/20 text-white hover:bg-white/10 transition-all duration-300 bg-white/20"
                 >
-                  <Download className="w-4 h-4" />
-                  <span>Descargar CV</span>
+                  <Code2 className="w-4 h-4" />
+                  <span>Softwares que cuentan historias</span>
                 </motion.button>
               </motion.div>
 

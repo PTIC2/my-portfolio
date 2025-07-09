@@ -12,5 +12,6 @@ export type Project = {
   impact: string;
   color: string;
   url: string;
+  images_urls : string[];
   private: boolean;
 };

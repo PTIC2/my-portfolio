@@ -1,8 +1,5 @@
+import { useLanguage } from "@/core/context/LanguageContext";
 import { Code2, Database, Rocket, Server, Terminal, Github, Linkedin } from "lucide-react";
-
-interface Props {
-    isSpanish : boolean
-}
 
 const skills = [
     'JavaScript', 'TypeScript', 'React', 'TailwindCSS', 'Node.js', 'Express.js', 'NestJS', 'SQL', 'Docker'
@@ -21,7 +18,10 @@ const socialMediaLinks = [
     },
 ];
 
-export const useHeroHook = ({ isSpanish } : Props) => {
+export const useHeroHook = () => {
+    const { language } = useLanguage();
+    const isSpanish = language === 'ES';
+
     const floatingTags = [
         { 
             id: 1, 
