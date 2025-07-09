@@ -15,3 +15,16 @@ export type Project = {
   images_urls : string[];
   private: boolean;
 };
+
+export type ProjectSecondary = {
+  id: number;
+  title: string;
+  description: string;
+  category: string;
+  technologies: string[];
+  image: string;
+  color: string;
+  github: string;
+  demo: string;
+  features: string[];
+}

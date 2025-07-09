@@ -45,7 +45,7 @@ export const SecondaryProjects = () => {
           
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4">
             Otros Trabajos
-            <span className="block text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400 mt-2">
+            <span className="block text-transparent bg-clip-text bg-gradient-to-r from-blue-700 via-blue-500 to-blue-300 mt-2">
               Destacados
             </span>
           </h2>
@@ -88,10 +88,7 @@ export const SecondaryProjects = () => {
                   {/* Project Image */}
                   <div className="relative h-48 overflow-hidden">
                     <div className={`absolute inset-0 bg-gradient-to-br ${project.color} opacity-20`} />
-                    <img 
-                      src={project.image} 
-                      alt={project.title}
-                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                    <img src={project.image} alt={project.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                     />
                     
                     {/* Overlay on Hover */}
@@ -105,6 +102,7 @@ export const SecondaryProjects = () => {
                         >
                           <motion.a
                             href={project.github}
+                            aria-label='Github icon'
                             initial={{ scale: 0 }}
                             animate={{ scale: 1 }}
                             transition={{ delay: 0.1 }}
@@ -115,6 +113,7 @@ export const SecondaryProjects = () => {
                           </motion.a>
                           <motion.a
                             href={project.demo}
+                            aria-label='Project demo icon'
                             initial={{ scale: 0 }}
                             animate={{ scale: 1 }}
                             transition={{ delay: 0.2 }}
@@ -152,7 +151,7 @@ export const SecondaryProjects = () => {
                     {/* Features */}
                     <div className="flex items-center justify-between">
                       <div className="flex items-center space-x-4 text-xs text-gray-500">
-                        {project.features.slice(0, 2).map((feature, i) => (
+                        {project.features.slice(0, 3).map((feature, i) => (
                           <span key={i} className="flex items-center space-x-1">
                             <Zap className="w-3 h-3" />
                             <span>{feature}</span>
@@ -189,7 +188,9 @@ export const SecondaryProjects = () => {
             whileTap={{ scale: 0.95 }}
             className="group inline-flex items-center space-x-2 px-6 py-3 rounded-full bg-white/10 border border-white/20 text-white hover:bg-white/20 transition-all duration-300"
           >
-            <span>Ver más en GitHub</span>
+            <span className='flex items-center gap-2'>
+              <Github /> Ver más en GitHub
+            </span>
             <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
           </motion.a>
         </motion.div>
