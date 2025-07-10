@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ExternalLink, Github, Code2, Zap, ArrowUpRight, ChevronRight } from 'lucide-react';
+import { ExternalLink, Github, Code2, Zap, ArrowUpRight, ChevronRight, Eye } from 'lucide-react';
 import { useHeroHook } from '../hooks/useHeroHook';
 import { useProjectsHook } from '../hooks/useProjectsHook';
 
@@ -55,16 +55,6 @@ export const SecondaryProjects = () => {
           </p>
         </motion.div>
 
-        {/* Category Filter */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.2 }}
-          className="flex flex-wrap justify-center gap-2 mb-12"
-        >
-        </motion.div>
-
         {/* Projects Grid */}
         <motion.div 
           layout
@@ -85,46 +75,36 @@ export const SecondaryProjects = () => {
                 className="group relative"
               >
                 <div className="relative bg-gradient-to-br from-gray-900/50 to-black/50 backdrop-blur-xl rounded-xl overflow-hidden border border-white/10 hover:border-white/20 transition-all duration-300">
-                  {/* Project Image */}
-                  <div className="relative h-48 overflow-hidden">
-                    <div className={`absolute inset-0 bg-gradient-to-br ${project.color} opacity-20`} />
-                    <img src={project.image} alt={project.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                  {/* Project Image - Optimized for web screenshots */}
+                  <div className="relative overflow-hidden rounded-t-xl">
+                    <div className={`absolute inset-0 bg-gradient-to-br ${project.color} opacity-10`} />
+                    <img 
+                      src={project.image} 
+                      alt={project.title} 
+                      className="w-full h-full object-contain bg-gray-900/50 transition-none"
                     />
                     
-                    {/* Overlay on Hover */}
-                    <AnimatePresence>
-                      {hoveredProject === project.id && (
-                        <motion.div
-                          initial={{ opacity: 0 }}
-                          animate={{ opacity: 1 }}
-                          exit={{ opacity: 0 }}
-                          className="absolute inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center space-x-4"
-                        >
-                          <motion.a
-                            href={project.github}
-                            aria-label='Github icon'
-                            initial={{ scale: 0 }}
-                            animate={{ scale: 1 }}
-                            transition={{ delay: 0.1 }}
-                            whileHover={{ scale: 1.1 }}
-                            className="p-3 rounded-full bg-white/20 text-white hover:bg-white/30 transition-colors"
-                          >
-                            <Github className="w-5 h-5" />
-                          </motion.a>
-                          <motion.a
-                            href={project.demo}
-                            aria-label='Project demo icon'
-                            initial={{ scale: 0 }}
-                            animate={{ scale: 1 }}
-                            transition={{ delay: 0.2 }}
-                            whileHover={{ scale: 1.1 }}
-                            className="p-3 rounded-full bg-blue-500 text-white hover:bg-blue-600 transition-colors"
-                          >
-                            <ExternalLink className="w-5 h-5" />
-                          </motion.a>
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
+                    {/* Overlay with explore button - appears on hover */}
+                    <motion.div
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: hoveredProject === project.id ? 1 : 0 }}
+                      className="absolute inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center pointer-events-none"
+                    >
+                      <motion.button
+                        initial={{ scale: 0.8, opacity: 0 }}
+                        animate={{ 
+                          scale: hoveredProject === project.id ? 1 : 0.8,
+                          opacity: hoveredProject === project.id ? 1 : 0
+                        }}
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                        onClick={() => console.log(`Explorar ${project.title}`)}
+                        className="px-4 py-2 bg-white/20 backdrop-blur-sm rounded-full border border-white/30 text-white font-medium flex items-center space-x-2 hover:bg-white/30 transition-all duration-300 pointer-events-auto cursor-pointer"
+                      >
+                        <Eye className="w-4 h-4" />
+                        <span>Explorar</span>
+                      </motion.button>
+                    </motion.div>
                   </div>
 
                   {/* Content */}
@@ -148,10 +128,10 @@ export const SecondaryProjects = () => {
                       ))}
                     </div>
 
-                    {/* Features */}
-                    <div className="flex items-center justify-between">
+                    {/* Features and Action Buttons */}
+                    <div className="flex items-center justify-between mb-4">
                       <div className="flex items-center space-x-4 text-xs text-gray-500">
-                        {project.features.slice(0, 3).map((feature, i) => (
+                        {project.features.slice(0, 2).map((feature, i) => (
                           <span key={i} className="flex items-center space-x-1">
                             <Zap className="w-3 h-3" />
                             <span>{feature}</span>
@@ -165,11 +145,32 @@ export const SecondaryProjects = () => {
                         <ArrowUpRight className="w-4 h-4" />
                       </motion.div>
                     </div>
+
+                    {/* Action Buttons */}
+                    <div className="flex items-center space-x-3">
+                      <motion.button
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                        onClick={() => console.log(`Demo de ${project.title}`)}
+                        className="flex-1 px-4 py-2 bg-blue-500/10 hover:bg-blue-500/20 border border-blue-500/20 hover:border-blue-500/30 rounded-lg text-blue-400 text-sm font-medium transition-all duration-300 flex items-center justify-center space-x-2 cursor-pointer"
+                      >
+                        <ExternalLink className="w-4 h-4" />
+                        <span>Ver Demo</span>
+                      </motion.button>
+                      
+                      <motion.button
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                        onClick={() => console.log(`Código de ${project.title}`)}
+                        className="px-4 py-2 bg-white/10 hover:bg-white/20 border border-white/20 hover:border-white/30 rounded-lg text-white text-sm font-medium transition-all duration-300 flex items-center justify-center space-x-2 cursor-pointer"
+                      >
+                        <Github className="w-4 h-4" />
+                        <span>Código</span>
+                      </motion.button>
+                    </div>
                   </div>
                 </div>
 
-                {/* Glow Effect */}
-                <div className={`absolute -inset-0.5 bg-gradient-to-r ${project.color} opacity-0 group-hover:opacity-20 blur-xl transition-opacity duration-500`} />
               </motion.div>
             ))}
           </AnimatePresence>

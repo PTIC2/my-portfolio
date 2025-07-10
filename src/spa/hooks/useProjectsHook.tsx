@@ -30,10 +30,10 @@ export const useProjectsHook = () => {
         description: 'Landing page moderna para startup tecnológica con animaciones y diseño responsive',
         category: 'landing',
         technologies: ['JavaScript', 'React', 'Tailwind', 'Framer Motion'],
-        image: '/api/placeholder/400/300',
+        image: '/imgs/projects/secondary/nexomigratorio.webp',
         color: 'from-blue-500 to-purple-500',
         github: '#',
-        demo: '#',
+        demo: 'https://www.nexomigratorio.com',
         features: ['Responsive', 'Animaciones', 'SEO Optimizado']
       },
       {
@@ -42,10 +42,10 @@ export const useProjectsHook = () => {
         description: 'Portfolio minimalista para diseñador gráfico con galería interactiva',
         category: 'landing',
         technologies: ['TypeScript', 'React', 'Tailwind', 'Framer Motion'],
-        image: '/api/placeholder/400/300',
+        image: '/imgs/projects/secondary/coactivasas.webp',
         color: 'from-pink-500 to-rose-500',
         github: '#',
-        demo: '#',
+        demo: 'https://www.grupocoactivasas.com/',
         features: ['Galería', 'Transiciones', 'Dark Mode']
       },
       {

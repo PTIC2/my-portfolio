@@ -57,7 +57,7 @@ export const LanguageProvider = ({ children }: LanguageProviderProps) => {
     language,
     languages,
     changeLanguage,
-    texts: texts[language as keyof typeof texts] || texts.en
+    texts: texts[language as keyof typeof texts] || texts.EN
   };
   
   return (
