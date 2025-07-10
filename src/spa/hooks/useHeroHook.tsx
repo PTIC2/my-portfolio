@@ -60,7 +60,7 @@ export const useHeroHook = () => {
             text: `${isSpanish ? 'Más de 1.6 años en la industria Tech' : '1.6+ Years in Tech'}`,
             icon: Rocket, 
             color: 'from-indigo-500 to-blue-500',
-            position: { bottom: '-5%', right: '-20%' },
+            position: { bottom: '-7%', right: '-20%' },
             mobilePosition: { bottom: '10px', right: '-30px' }
         },
     ];
