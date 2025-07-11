@@ -81,7 +81,7 @@ export const Card3D = ({ setIsHovered, isHovered, isMobile, mousePosition } : Pr
         ))}
 
         {/* Glowing Background */}
-        <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 to-purple-500/20 blur-3xl" />
+        {!isMobile && (<div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 to-purple-500/20 blur-xl" />)}
         
         {/* Card Container */}
         <div className="relative bg-gradient-to-br from-gray-900/90 via-gray-900/80 to-black/90 backdrop-blur-xl rounded-2xl p-6 sm:p-8 border border-white/10 overflow-hidden">
@@ -99,7 +99,7 @@ export const Card3D = ({ setIsHovered, isHovered, isMobile, mousePosition } : Pr
                 {showCode ? (
                     // Code Preview
                     <div>
-                        <div className="flex items-center space-x-2 mb-4">
+                        <div className="flex items-center space-x-2 mb-5">
                             <div className="w-3 h-3 rounded-full bg-red-500" />
                             <div className="w-3 h-3 rounded-full bg-yellow-500" />
                             <div className="w-3 h-3 rounded-full bg-green-500" />
@@ -143,6 +143,7 @@ export const Card3D = ({ setIsHovered, isHovered, isMobile, mousePosition } : Pr
                             </div>
                             <div className="ml-4 text-gray-400">],</div>
                             <div className="text-gray-400">{'}'}</div>
+                            
                         </div>
                     </div>
                 ) : (

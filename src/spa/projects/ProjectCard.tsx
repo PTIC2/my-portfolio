@@ -1,18 +1,43 @@
+import { useLanguage } from "@/core/context/LanguageContext";
 import type { Project } from "../assets/ts/types";
 import { AnimatePresence, motion } from "framer-motion";
-import { ExternalLink,Code2,Lock,Layers,Users,Calendar} from 'lucide-react';
-
+import { 
+  ExternalLink, 
+  Lock, 
+  Users, 
+  Calendar, 
+  Briefcase,
+  Target,
+  ChevronRight,
+  Code2,
+  Sparkles
+} from 'lucide-react';
+import { useEffect, useState } from "react";
+ 
 interface Props {
-  currentProject : Project;
-  activeProject : number;
-  setHoveredTech : (value : string | null) => void;
-  projects : Project[];
+  currentProject: Project;
+  activeProject: number;
+  setHoveredTech: (value: string | null) => void;
+  projects: Project[];
 }
+ 
+export const ProjectCard = ({ currentProject, activeProject, setHoveredTech }: Props) => {
+  const [isInfoVisible, setIsInfoVisible] = useState(false);
+  const [isMobile, setIsMobile] = useState<boolean>(false);
+  const { language } = useLanguage();
+  const isSpanish = language === 'ES';
 
-export const ProjectCard = ({ currentProject, activeProject, setHoveredTech } : Props) => {
+  // Detectar si es mobile
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768 || 'ontouchstart' in window);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+ 
   return (
     <div className="relative max-w-7xl mx-auto">
-      <div className="grid lg:grid-cols-2 gap-8 lg:gap-16 items-center">
+      <div className="grid lg:grid-cols-2 gap-8 lg:gap-16 items-start">
         {/* Left: Project Info */}
         <motion.div
           key={currentProject.id}
@@ -33,8 +58,8 @@ export const ProjectCard = ({ currentProject, activeProject, setHoveredTech } : 
             </span>
             <div className="flex-1 h-px bg-gradient-to-r from-gray-800 to-transparent" />
           </motion.div>
-
-          {/* Project Title */}
+ 
+          {/* Project Title & Subtitle */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -46,70 +71,125 @@ export const ProjectCard = ({ currentProject, activeProject, setHoveredTech } : 
             </h3>
             <p className="text-xl text-gray-400">{currentProject.subtitle}</p>
           </motion.div>
-
-          {/* Project Description */}
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-            className="text-gray-300 mb-6 leading-relaxed"
-          >
-            {currentProject.longDescription}
-          </motion.p>
-
-          {/* Project Stats */}
+ 
+          {/* Role & Duration Badge */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3 }}
-            className="grid grid-cols-2 sm:grid-cols-3 gap-4 mb-8"
+            transition={{ delay: 0.15 }}
+            className="flex flex-wrap gap-3 mb-6"
           >
-            <div className="text-center p-4 rounded-lg bg-white/5 backdrop-blur-sm">
-              <Users className="w-5 h-5 text-blue-400 mx-auto mb-2" />
-              <p className="text-sm text-gray-400">Equipo</p>
-              <p className="text-white font-medium">{currentProject.teamSize}</p>
+            <div className='flex items-center space-x-2 px-4 py-2 rounded-full bg-blue-500/10 border border-blue-500/20'>
+              <Briefcase className="w-4 h-4 text-blue-400" />
+              <span className="text-sm text-blue-400 font-medium">{currentProject.role}</span>
             </div>
-            <div className="text-center p-4 rounded-lg bg-white/5 backdrop-blur-sm">
-              <Calendar className="w-5 h-5 text-green-400 mx-auto mb-2" />
-              <p className="text-sm text-gray-400">Duración</p>
-              <p className="text-white font-medium">{currentProject.duration}</p>
+            <div className="flex items-center space-x-2 px-4 py-2 rounded-full bg-white/5 border border-white/10">
+              <Calendar className="w-4 h-4 text-gray-400" />
+              <span className="text-sm text-gray-400">{currentProject.duration}</span>
             </div>
-            <div className="text-center p-4 rounded-lg bg-white/5 backdrop-blur-sm">
-              <Code2 className="w-5 h-5 text-purple-400 mx-auto mb-2" />
-              <p className="text-sm text-gray-400">Rol</p>
-              <p className="text-white font-medium">{currentProject.role}</p>
+            <div className="flex items-center space-x-2 px-4 py-2 rounded-full bg-white/5 border border-white/10">
+              <Users className="w-4 h-4 text-gray-400" />
+              <span className="text-sm text-gray-400">{currentProject.teamSize}</span>
             </div>
           </motion.div>
-
-          {/* Technologies */}
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4 }} className="mb-8"
+ 
+          {/* Description */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            className="mb-6"
           >
-            <h4 className="text-sm text-gray-400 mb-3">Tecnologías utilizadas</h4>
+            <motion.p
+              className="text-gray-300 leading-relaxed cursor-pointer relative"
+              onMouseEnter={() => !isMobile && setIsInfoVisible(true)}
+              onMouseLeave={() => !isMobile && setIsInfoVisible(false)}
+              onClick={() => isMobile && setIsInfoVisible(!isInfoVisible)}
+            >
+              {currentProject.description}
+              
+              {/* Indicator de más info */}
+              <motion.span
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ 
+                  opacity: isInfoVisible ? 0.7 : 0.3, 
+                  scale: isInfoVisible ? 1.1 : 1 
+                }}
+                transition={{ duration: 0.2 }}
+                className="ml-2 text-blue-400 text-sm"
+              >
+                {isMobile ? '👆' : 'ℹ️'}
+              </motion.span>
+            </motion.p>
+
+            {/* Tooltip/Modal con información adicional */}
+            <AnimatePresence>
+              {isInfoVisible && (
+                <motion.div
+                  initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                  transition={{ duration: 0.2, ease: "easeOut" }}
+                  className="absolute z-50 mt-2 p-7 bg-gray-800/95 backdrop-blur-sm rounded-lg shadow-xl border border-gray-700 max-w-md"
+                  style={{ 
+                    left: isMobile ? '50%' : '0',
+                    transform: isMobile ? 'translateX(-50%)' : 'none'
+                  }}
+                >
+                  <div className="space-y-3">
+                    {/* Título de la info adicional */}
+                    <h4 className="text-blue-400 font-semibold text-sm">
+                      Información adicional
+                    </h4>
+                    
+                    {/* Descripción larga */}
+                    <p className="text-gray-300 text-sm leading-relaxed">
+                      {currentProject.longDescription}
+                    </p>
+                  </div>
+                  
+                  {/* Flecha del tooltip */}
+                  <div className="absolute -top-2 left-4 w-4 h-4 bg-gray-800 rotate-45 border-l border-t border-gray-700"></div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </motion.div>
+ 
+          {/* Technologies */}
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }} 
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.5 }} 
+            className="mb-8"
+          >
+            <h4 className="text-sm text-gray-400 mb-3 flex items-center space-x-2">
+              <Code2 className="w-4 h-4" />
+              <span>{isSpanish ? 'Stack Tecnológico' : 'Tech Stack'}</span>
+            </h4>
             <div className="flex flex-wrap gap-2">
               {currentProject.technologies.map((tech, index) => (
                 <motion.span
                   key={tech}
                   initial={{ opacity: 0, scale: 0 }}
                   animate={{ opacity: 1, scale: 1 }}
-                  transition={{ delay: 0.5 + index * 0.05 }}
-                  whileHover={{ scale: 1.1 }}
+                  transition={{ delay: 0.6 + index * 0.05 }}
+                  whileHover={{ scale: 1.1, y: -2 }}
                   onHoverStart={() => setHoveredTech(tech)}
                   onHoverEnd={() => setHoveredTech(null)}
-                  className="px-3 py-1 text-sm rounded-full bg-white/10 text-white border border-white/20 hover:border-blue-400/50 transition-all cursor-pointer"
+                  className="px-3 py-1.5 text-sm rounded-full bg-white/10 text-white border border-white/20 hover:border-blue-400/50 hover:bg-blue-500/10 transition-all cursor-pointer"
                 >
                   {tech}
                 </motion.span>
               ))}
             </div>
           </motion.div>
-
+ 
           {/* Action Buttons */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.6 }}
-            className="flex flex-wrap gap-4"
+            transition={{ delay: 0.7 }}
+            className="flex flex-wrap justify-center gap-2"
           >
             {currentProject.url && (
               <motion.a
@@ -118,22 +198,22 @@ export const ProjectCard = ({ currentProject, activeProject, setHoveredTech } : 
                 rel="noopener noreferrer"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="flex items-center space-x-2 px-6 py-3 rounded-full bg-blue-600 text-white hover:bg-blue-700 transition-all"
+                className="group relative overflow-hidden flex items-center space-x-2 px-6 py-3 rounded-full bg-blue-600 text-white hover:bg-blue-700 transition-all"
               >
-                <ExternalLink className="w-5 h-5" />
-                <span>Descubre más</span>
-              </motion.a>
-            )}
+                <ExternalLink className="w-5 h-5 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+                <span>{isSpanish ? 'Explorar Proyecto' : 'View Project'}</span>
 
-            {currentProject.private && (
-              <div className="flex items-center space-x-2 px-6 py-2 rounded-full bg-gray-800 text-gray-400">
-                <Lock className="w-5 h-5" />
-                <span>Proyecto Privado</span>
-              </div>
+                <motion.div
+                  className="absolute inset-0 bg-gradient-to-r from-blue-600 to-blue-500"
+                  whileHover={{ scale: 1.2, rotate: 45 }}
+                  transition={{ duration: 0.6 }}
+                  style={{ zIndex: -1 }}
+                />
+              </motion.a>
             )}
           </motion.div>
         </motion.div>
-
+ 
         {/* Right: Visual Display */}
         <motion.div
           initial={{ opacity: 0, scale: 0.8 }}
@@ -142,7 +222,7 @@ export const ProjectCard = ({ currentProject, activeProject, setHoveredTech } : 
           className="order-1 lg:order-2 relative"
         >
           {/* 3D Card Container */}
-          <div className="relative h-[400px] lg:h-[500px]">
+          <div className="relative w-full mx-auto">
             <AnimatePresence mode="wait">
               <motion.div
                 key={currentProject.id}
@@ -150,77 +230,151 @@ export const ProjectCard = ({ currentProject, activeProject, setHoveredTech } : 
                 animate={{ rotateY: 0, opacity: 1 }}
                 exit={{ rotateY: 90, opacity: 0 }}
                 transition={{ duration: 0.6 }}
-                className="absolute inset-0"
+                className="relative"
                 style={{ perspective: 1000 }}
               >
                 {/* Project Card */}
                 <motion.div
-                  whileHover={{ rotateY: 10, rotateX: -5 }}
-                  className={`relative h-full rounded-2xl bg-gradient-to-br ${currentProject.color} p-[2px] overflow-hidden`}
+                  whileHover={{ rotateY: 5, rotateX: -3, scale: 1.02 }}
+                  transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                  className={`relative rounded-2xl bg-gradient-to-br ${currentProject.color} p-[2px] overflow-hidden shadow-2xl`}
                 >
-                  <div className="relative h-full rounded-2xl bg-black/90 backdrop-blur-xl overflow-hidden">
-                    {/* Project Image */}
-                    {(currentProject.images_urls.length >= 1) && (
-                      <motion.div initial={{ opacity: 0, scale: 1.1 }} animate={{ opacity: 1, scale: 1 }}
-                        transition={{ duration: 0.8 }} className="absolute inset-0 z-0"
+                  <div className="relative rounded-2xl bg-gradient-to-br from-gray-900/95 to-black/95 overflow-hidden backdrop-blur-xl">
+                    {/* Project Images Gallery */}
+                    {currentProject.images_urls.length > 0 && (
+                      <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ duration: 0.8 }}
+                        className="relative group"
                       >
-                        <img src={currentProject.images_urls[0]} alt={`${currentProject.title}`}
-                          className="w-full h-full" loading="lazy"
-                        />
-                        {/* Overlay gradient for better text readability */}
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-black/60" />
+                        {/* Main Image - Aspect ratio para screenshots web */}
+                        <div className="relative w-full bg-gray-900">
+                          <img
+                            src={currentProject.images_urls[0]}
+                            alt={`${currentProject.title} screenshot`}
+                            className="w-full h-full object-cover object-top"
+                            loading="lazy"
+                          />
+                          
+                          {/* Subtle gradient overlay */}
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent pointer-events-none" />
+                          
+                          {/* Hover shine effect */}
+                          <motion.div
+                            className="absolute inset-0 bg-gradient-to-br from-white/0 via-white/5 to-white/0 opacity-0"
+                            whileHover={{ opacity: 1 }}
+                            transition={{ duration: 0.3 }}
+                          />
+
+                          {/* Long Description Overlay */}
+                          <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            whileHover={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.3, ease: "easeOut" }}
+                            className="absolute inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center p-6 opacity-0 group-hover:opacity-100"
+                          >
+                            <div className="text-center max-w-md">
+                              <motion.p
+                                initial={{ opacity: 0, y: 10 }}
+                                whileHover={{ opacity: 1, y: 0 }}
+                                transition={{ duration: 0.4, delay: 0.1 }}
+                                className="text-white text-sm md:text-base leading-relaxed"
+                              >
+                                {currentProject.longDescription}
+                              </motion.p>
+                            </div>
+                          </motion.div>
+                        </div>
                       </motion.div>
                     )}
 
-                    {/* Content */}
-                    <div className="relative z-10 h-full p-6 sm:p-8 flex flex-col justify-end">
-                      <motion.div
-                        initial={{ opacity: 0, y: 30 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.7 }}
-                        className="text-center"
-                      >
-                        <h3 className="text-2xl sm:text-3xl font-bold text-white mb-3 drop-shadow-lg">
-                          {currentProject.title}
-                        </h3>
-                        <p className="text-gray-200 mb-6 text-sm sm:text-base drop-shadow-md">
-                          {currentProject.description}
-                        </p>
-                        
-                        {/* Features */}
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 max-w-md mx-auto">
-                          {currentProject.features.slice(0, 4).map((feature, index) => (
-                            <motion.div key={feature} initial={{ opacity: 0, y: 20 }}
-                              animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.8 + index * 0.1 }}
-                              className="flex items-center space-x-2 text-sm text-gray-400"
-                              >
-                              <Layers className="w-4 h-4 text-blue-400" />
-                              <span className="text-gray-300">{feature}</span>
-                            </motion.div>
-                          ))}
-                        </div>
-                      </motion.div>
-                    </div>
-
-                    {/* Decorative Elements */}
+                    {/* Decorative elements */}
                     <motion.div
-                      animate={{ scale: [1, 1.2, 1] }}
+                      animate={{
+                        scale: [1, 1.2, 1],
+                        opacity: [0.1, 0.2, 0.1]
+                      }}
                       transition={{ duration: 4, repeat: Infinity }}
-                      className="absolute top-8 right-8 w-16 h-16 sm:w-20 sm:h-20 bg-white/10 rounded-full blur-xl"
+                      className="absolute -top-20 -right-20 w-40 h-40 bg-blue-500/20 rounded-full blur-3xl"
                     />
                     <motion.div
-                      animate={{ scale: [1, 1.3, 1] }}
-                      transition={{ duration: 5, repeat: Infinity }}
-                      className="absolute bottom-8 left-8 w-20 h-20 sm:w-24 sm:h-24 bg-white/10 rounded-full blur-xl"
+                      animate={{
+                        scale: [1, 1.3, 1],
+                        opacity: [0.05, 0.15, 0.05]
+                      }}
+                      transition={{ duration: 6, repeat: Infinity }}
+                      className="absolute -bottom-20 -left-20 w-60 h-60 bg-purple-500/20 rounded-full blur-3xl"
                     />
                   </div>
                 </motion.div>
+
+                {/* Floating badge */}
+                {currentProject.private && (
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ delay: 0.8 }}
+                    className="absolute -top-6 -right-3 px-3 py-1.5 rounded-full bg-gray-800 border border-gray-700 shadow-lg"
+                  >
+                    <div className="flex items-center space-x-1.5">
+                      <Lock className="w-3.5 h-3.5 text-gray-400" />
+                      <span className="text-xs text-gray-400 font-medium">Private</span>
+                    </div>
+                  </motion.div>
+                )}
               </motion.div>
             </AnimatePresence>
-
           </div>
+
+          {/* Impact Section */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+            className="my-6 p-4 rounded-xl bg-gradient-to-r from-blue-500/10 to-purple-500/10 border border-blue-500/20"
+          >
+            <div className="flex items-start space-x-3">
+              <Target className="w-5 h-5 text-blue-400 mt-0.5" />
+              <div>
+                <h4 className="text-sm font-semibold text-blue-400 mb-1">
+                  {isSpanish ? 'Impacto del Proyecto' : 'Project Impact'}
+                </h4>
+                <p className="text-gray-300 text-sm leading-relaxed">
+                  {currentProject.impact}
+                </p>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Key Features */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.35 }}
+            className="my-6"
+          >
+            <h4 className="text-sm text-gray-400 mb-3 flex items-center space-x-2">
+              <Sparkles className="w-4 h-4" />
+              <span>{isSpanish ? 'Características Principales' : 'Key Features'}</span>
+            </h4>
+            <div className="space-y-2">
+              {currentProject.features.map((feature, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.4 + index * 0.05 }}
+                  className="flex items-center space-x-2 text-gray-300"
+                >
+                  <ChevronRight className="w-4 h-4 text-blue-400" />
+                  <span className="text-sm">{feature}</span>
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
         </motion.div>
       </div>
     </div>
-  )
-}
+  );
+};

@@ -1,13 +1,14 @@
 import { useState, useRef, useEffect } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
-import { ChevronLeft, ChevronRight, Sparkles } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Sparkles, ArrowLeft, ArrowRight } from 'lucide-react';
 import { ProjectCard } from '../projects/ProjectCard';
 import { useProjectsHook } from '../hooks/useProjectsHook';
 
 export const ProjectsSection = () => {
   const { projects } = useProjectsHook();
   const [activeProject, setActiveProject] = useState(0);
-  const [___, setHoveredTech] = useState<null | string>(null);
+  const [_, setHoveredTech] = useState<null | string>(null);
+  const [isDesktop, setIsDesktop] = useState(false);
   const containerRef = useRef(null);
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -26,6 +27,16 @@ export const ProjectsSection = () => {
     };
     window.addEventListener('keydown', handleKeyPress);
     return () => window.removeEventListener('keydown', handleKeyPress);
+  }, []);
+
+  // Detectar si es desktop
+  useEffect(() => {
+    const checkDesktop = () => {
+      setIsDesktop(window.innerWidth >= 768 && !('ontouchstart' in window));
+    };
+    checkDesktop();
+    window.addEventListener('resize', checkDesktop);
+    return () => window.removeEventListener('resize', checkDesktop);
   }, []);
 
   const currentProject = projects[activeProject];
@@ -70,6 +81,43 @@ export const ProjectsSection = () => {
           </p>
         </motion.div>
 
+        {/* Keyboard Navigation Hint - Solo Desktop */}
+        {isDesktop && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.3 }}
+            className="flex items-center justify-center mb-8"
+          >
+            <motion.div
+              initial={{ scale: 0.8, opacity: 0 }}
+              whileInView={{ scale: 1, opacity: 1 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.5 }}
+              className="inline-flex items-center space-x-3 px-4 py-2 rounded-lg bg-gray-800/50 border border-gray-700/50 backdrop-blur-sm"
+            >
+              <span className="text-gray-400 text-sm">Puedes usar las teclas para navegar:</span>
+              <div className="flex items-center space-x-2">
+                <motion.div
+                  whileHover={{ scale: 1.1 }}
+                  className="flex items-center space-x-1 px-2 py-1 bg-gray-700/50 rounded border border-gray-600/50"
+                >
+                  <ArrowLeft className="w-3 h-3 text-gray-300" />
+                  <span className="text-xs text-gray-300">←</span>
+                </motion.div>
+                <motion.div
+                  whileHover={{ scale: 1.1 }}
+                  className="flex items-center space-x-1 px-2 py-1 bg-gray-700/50 rounded border border-gray-600/50"
+                >
+                  <ArrowRight className="w-3 h-3 text-gray-300" />
+                  <span className="text-xs text-gray-300">→</span>
+                </motion.div>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+
         {/* Main Project Display */}
         <ProjectCard 
             setHoveredTech={setHoveredTech} 
@@ -94,6 +142,7 @@ export const ProjectsSection = () => {
               <motion.button
                 key={index}
                 whileHover={{ scale: 1.2 }}
+                aria-label={`Select Project ${index + 1}`}
                 onClick={() => setActiveProject(index)}
                 className={`h-2 rounded-full transition-all duration-300 ${
                   index === activeProject 

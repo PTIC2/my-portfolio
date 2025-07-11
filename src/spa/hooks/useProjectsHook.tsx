@@ -8,22 +8,99 @@ export const useProjectsHook = () => {
     const projects : Project[] = [
         {
             id: 1,
-            title: "New Stetic SST",
-            subtitle: "Sistema de Gestión SST",
-            description: "Sistema de gestión de Seguridad y Salud en el Trabajo con arquitectura de microservicios. Optimiza procesos clave, seguimiento de personal y vigilancia epidemiológica.",
-            longDescription: "Lideré el desarrollo de un sistema completo de SST estructurado bajo microservicios, implementando módulos para gestión de EPP, inspecciones y control de accidentalidad.",
-            technologies: ["Node.js", "NestJS", "PostgreSQL", "Docker", "React", "TypeScript"],
-            features: ["Microservicios", "Gestión EPP", "Vigilancia Epidemiológica", "Dashboard Analytics"],
-            role: "Full Stack Developer",
-            duration: "6 meses",
-            teamSize: "4 personas",
-            impact: "Reducción del 40% en tiempos de gestión",
-            color: "from-teal-500 via-teal-300 to-teal-100",
-            url : 'http://localhost:5000/',
+            title: `${isSpanish ? 'Belleza Perfecta' : 'Perfect Beauty'}`,
+            subtitle: `${isSpanish ? 'Plataforma de gestión administrativa y comercial para optimizar procesos internos.' : 'Administrative and commercial management platform to optimize internal processes.'}`,
+            description: `${isSpanish ? 'Belleza Perfecta es un sistema administrativo integral diseñado para optimizar la gestión operativa, comercial y financiera de la empresa homónima, brindando un control eficiente y centralizado de sus procesos.' : 'Perfect Beauty is a comprehensive administrative system designed to optimize the operational, commercial, and financial management of the company of the same name, providing efficient and centralized control of its processes.'}`,
+            longDescription: `${isSpanish ? 'Belleza Perfecta permite gestionar clientes, productos, usuarios y facturación interna, mejorando el control administrativo y comercial. Ofrece facturación automatizada, control de inventario, descarga de facturas en PDF, gestión de usuarios con roles, reportes filtrables y exportables, historial de actividades y una estructura adaptable para facilitar su crecimiento y despliegue.' : 'Perfect Beauty allows managing clients, products, users, and internal invoicing, improving administrative and commercial control. It offers automated invoicing, inventory control, PDF invoice downloads, user management with roles, filterable and exportable reports, activity history, and an adaptable structure to facilitate its growth and deployment.'}`,
+            technologies: ["TypeScript", "React + TS", "Tailwind CSS", "Node.js", "NestJS", "MySQL", "Docker"],
+            features : [
+              `${isSpanish ? 'Gestión de Clientes' : 'Client Management'}`, 
+              `${isSpanish ? 'Control de Inventario' : 'Inventory Control'}`, 
+              `${isSpanish ? 'Reportes Personalizados' : 'Custom Reports'}`, 
+              `${isSpanish ? 'Facturación Automatizada' : 'Automated Invoicing'}`
+            ],
+            role: `${isSpanish ? 'Desarrollador Full Stack' : 'Full Stack Developer'}`,
+            duration: `2 ${isSpanish ? 'meses' : 'months'}`,
+            teamSize: `1 ${isSpanish ? 'persona' : 'person'}`,
+            impact: `${isSpanish ? 'Reducción del 65% en tiempos de gestión' : '65% reduction in management time'}`,
+            color: "from-yellow-500 via-yellow-300 to-yellow-100",
+            url : 'https://belleza-perfecta.com/',
             images_urls : [
-                'https://sgvsoftware.com/wp-content/uploads/2022/09/fabrica-newstetic.jpg'
+                '/assets/imgs/projects/main/bellezaperfecta/BellezaPerfecta.webp',
             ],
             private: true
+        },
+        {
+            id: 2,
+            title: `Factus`,
+            subtitle: `${isSpanish ? 'Facturación electrónica conforme a la DIAN, con gestión integral de productos y clientes.' : 'Electronic invoicing compliant with DIAN, with comprehensive management of products and clients.'}`,
+            description: `${isSpanish ? 'Sistema de facturación electrónica diseñado para Colombia. Permite generar facturas de ventas con el formato obligatorio de la DIAN (Dirección de Impuestos y Aduanas Nacionales), así como gestionar productos y contactos.' : 'Electronic invoicing system designed for Colombia. It allows generating sales invoices with the mandatory format of the DIAN (National Tax and Customs Directorate), as well as managing products and contacts.'}`,
+            longDescription: `${isSpanish ? 'Sistema de facturación electrónica diseñado para Colombia. Permite generar facturas de venta con el formato obligatorio de la DIAN (Dirección de Impuestos y Aduanas Nacionales), así como gestionar productos y contactos. Además, incluye funcionalidades como control de inventario, emisión de notas crédito y débito, descarga de documentos en PDF y XML, reportes financieros detallados, gestión de clientes y proveedores, múltiples roles de usuario, historial de actividades y una estructura escalable para facilitar su crecimiento y despliegue.' : 'Electronic invoicing system designed for Colombia. It allows the generation of sales invoices in the mandatory format required by the DIAN (Dirección de Impuestos y Aduanas Nacionales), as well as the management of products and contacts. Additionally, it includes features such as inventory control, issuance of credit and debit notes, PDF and XML document downloads, detailed financial reports, management of clients and suppliers, multiple user roles, activity history, and a scalable structure to support growth and deployment.'}`,
+            technologies: ["JavaScript", "React + JSX", "Tailwind CSS", "Node.js", "Express.js", "MySQL", "Docker"],
+            features : [
+              `${isSpanish ? 'Generación de Facturas DIAN (PDF/XML)' : 'DIAN-Compliant Invoice Generation (PDF/XML)'}`,
+              `${isSpanish ? 'Gestión de Clientes y Proveedores' : 'Client and Supplier Management'}`,
+              `${isSpanish ? 'Estructura Escalable y Desplegable' : 'Scalable and Deployable Structure'}`,
+              `${isSpanish ? 'Emisión de Notas Crédito y Débito' : 'Credit and Debit Notes Issuance'}`,
+            ],
+            role: `${isSpanish ? 'Desarrollador Backend' : 'Backend Developer'}`,
+            duration: `8 ${isSpanish ? 'meses' : 'months'}`,
+            teamSize: `6 ${isSpanish ? 'persona' : 'person'}`,
+            impact: `${isSpanish ? 'Automatizó el proceso de facturación y mejoró el cumplimiento con la DIAN.' : 'Automated invoicing and improved DIAN compliance.'}`,
+            color: "from-blue-500 via-blue-300 to-blue-100",
+            url : 'https://www.factus.com.co/',
+            images_urls : [
+                '/assets/imgs/projects/main/factus/FactusIMG.webp'
+            ],
+            private: true
+        },
+        {
+          id: 3,
+          title: `Reservify`,
+          subtitle: `${isSpanish ? 'Sistema de reservas en línea con control administrativo y experiencia optimizada para el cliente.' : 'Online reservation system with admin control and an optimized customer experience.'}`,
+          description: `${isSpanish ? 'Sistema de reservas para restaurantes que permite a los clientes reservar mesas de forma fácil y rápida, y a los administradores gestionar horarios, usuarios y solicitudes desde una interfaz intuitiva.' : 'A restaurant reservation system that allows customers to easily book tables online and enables administrators to manage schedules, users, and requests through an intuitive interface.'}`,
+          longDescription: `${isSpanish ? 'Sistema de reservas en línea diseñado para restaurantes. Ofrece una experiencia intuitiva tanto para el cliente como para el administrador. Permite gestionar reservas de mesas, controlar horarios de atención y disponibilidad, mantener un historial completo de reservas, gestionar usuarios y sus roles, así como recibir y administrar solicitudes o mensajes enviados por los usuarios. Todo esto en una plataforma accesible y fácil de usar que optimiza el proceso de atención y organización del restaurante.' : 'An online reservation system designed for restaurants. It provides an intuitive experience for both customers and administrators. Customers can book and manage table reservations, while administrators can control opening hours and table availability, maintain a full reservation history, manage users and their roles, and handle user messages or requests. All in a user-friendly platform that streamlines restaurant operations and customer service.'}`,
+          technologies: ["JavaScript", "React + JSX", "Tailwind CSS", "Python", "FastAPI", "MySQL", "Docker"],
+          features : [
+            `${isSpanish ? 'Reservas de Mesas en Línea' : 'Online Table Reservations'}`,
+            `${isSpanish ? 'Gestión de Horarios y Disponibilidad' : 'Schedule and Availability Management'}`,
+            `${isSpanish ? 'Historial de Reservas' : 'Reservation History'}`,
+            `${isSpanish ? 'Gestión de Solicitudes de Usuarios' : 'User Request Management'}`
+          ],
+          role: `${isSpanish ? 'Desarrollador Full Stack' : 'Full Stack Developer'}`,
+          duration: `${isSpanish ? '1 mes' : '1 month'}`,
+          teamSize: `1 ${isSpanish ? 'persona' : 'person'}`,
+          impact: `${isSpanish ? 'Digitalizó el proceso de reservas, reduciendo tiempos de atención y mejorando la experiencia del cliente.' : 'Digitalized the reservation process, reducing response times and improving customer experience.'}`,
+          color: "from-purple-700 via-purple-400 to-purple-200",
+          url : 'https://reservify-front.vercel.app/',
+          images_urls : [
+              '/assets/imgs/projects/main/reservify/ReservifyIMG.webp'
+          ],
+          private: false
+        },
+        {
+          id: 4,
+          title: `UrbanWheels`,
+          subtitle: `${isSpanish ? 'Gestión integral de flota, reservas y clientes en un solo sistema eficiente.' : 'Comprehensive management of fleet, bookings, and clients in one efficient system.'}`,
+          description: `${isSpanish ? 'Sistema avanzado para la gestión de flotas de vehículos, reservas y clientes, que mejora la eficiencia operativa y la experiencia del usuario.' : 'Advanced system for managing vehicle fleets, bookings, and clients, enhancing operational efficiency and user experience.'}`,
+          longDescription: `${isSpanish ? 'UrbanWheels es un sistema avanzado para la gestión integral de la flota de vehículos, las reservas y los clientes. Centraliza y optimiza procesos operativos como el control de disponibilidad, la administración de clientes, la planificación de reservas y el seguimiento de vehículos. Proporciona una experiencia fluida para los usuarios y herramientas analíticas para facilitar decisiones estratégicas.' : 'UrbanWheels is an advanced system for the comprehensive management of vehicle fleets, bookings, and clients. It centralizes and optimizes operational processes such as availability tracking, client administration, booking scheduling, and vehicle monitoring. It delivers a seamless user experience and provides analytical tools to support strategic decision-making.'}`,
+          technologies: ["JavaScript", "React + JSX", "Tailwind CSS", "Python", "FastAPI", "MySQL", "Docker"],
+          features : [
+            `${isSpanish ? 'Gestión de Flotas de Vehículos' : 'Fleet Management'}`,
+            `${isSpanish ? 'Reservas de Vehículos en Línea' : 'Online Vehicle Booking'}`,
+            `${isSpanish ? 'Gestión de Clientes y sus Historiales' : 'Client Management with History'}`,
+            `${isSpanish ? 'Reportes Operativos y Análisis' : 'Operational Reports & Analytics'}`,
+          ],
+          role: `${isSpanish ? 'Desarrollador Full Stack' : 'Full Stack Developer'}`,
+          duration: `${isSpanish ? '4 meses' : '4 months'}`,
+          teamSize: `3 ${isSpanish ? 'persona' : 'person'}`,
+          impact: `${isSpanish ? 'Mejoró la eficiencia operativa y redujo los errores en reservas y gestión de flota.' : 'Improved operational efficiency and reduced errors in bookings and fleet management.'}`,
+          color: "from-red-700 via-red-400 to-red-200",
+          url : 'https://github.com/CardonaAndres/UrbanWheelsClient',
+          images_urls : [
+              '/assets/imgs/projects/main/urbanwheels/UrbanWheels.webp'
+          ],
+          private: false
         }
     ];
 
